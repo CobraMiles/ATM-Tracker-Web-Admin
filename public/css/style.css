@@ -1,0 +1,390 @@
+:root {
+  --color-bg: #f4f4f4;
+  --sidebar-bg: #1c1c1e;
+  --sidebar-hover-bg: #2c2c2e;
+  --sidebar-text: #ffffff;
+  --sidebar-border: #ffffff;
+  --header-bg: #ffffff;
+  --header-text: #000000;
+  --action-btn-bg: rgba(131, 131, 131, 0.21);
+  --overlay-bg: rgba(0, 0, 0, 0.6);
+  --modal-bg: #ffffff;
+  --modal-border: #ccc; 
+  --color-border: #dddddd;
+  --color-primary: #ffffff;
+  --color-secondary: #000000;
+  --color-white: #ffffff;
+  --color-black: #000000;
+}
+
+
+
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: var(--color-bg);
+}
+
+.app-container {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.sidebar {
+  width: 240px;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: var(--sidebar-bg);
+  color: var(--sidebar-text);
+  padding-top: 60px;
+  box-sizing: border-box;
+}
+
+.sidebar h2 {
+  padding-left: 20px;
+}
+
+.menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menu-item {
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  cursor: pointer;
+  padding: 12px 20px;
+  transition: background 0.3s, border-left 0.3s;
+  border-left: 3px solid transparent;
+}
+
+.menu-item:hover {
+  background-color: var(--sidebar-hover-bg);
+  border-left: 4px solid var(--sidebar-border);
+}
+
+.menu-item.active{
+  background-color: var(--sidebar-hover-bg);
+  border-left: 4px solid var(--sidebar-border);
+}
+
+
+.main-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-bg);
+  margin-left: 240px;
+  overflow: hidden;
+}
+
+.main-view {
+  flex: 1;
+  padding: 2rem;
+  overflow-y: auto;
+}
+
+.header {
+  background-color: var(--header-bg);
+  padding: 10px 20px;
+  border-bottom: 1px solid var(--color-border);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  color: var(--header-text);
+}
+
+#view-title {
+  font-size: 20px;
+  font-weight: bold;
+}
+ 
+/*-----------------------------*/
+/*        ATM Styles          */
+/*---------------------------*/
+.atm-header {
+  display: flex;
+  justify-content: flex-end;
+  padding: 1rem 0rem 1rem 1.5rem;
+  margin-top: 1rem;
+}
+
+.add-atm-btn {
+  background: var(--color-secondary);
+  color: var(--color-white);
+  border: none;
+  padding: 0.6rem 3.4rem;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.add-atm-btn:hover {
+  background-color: #333;
+}
+
+.atm-list {
+  margin-top: 1.5rem;
+}
+
+.atm-card {
+  background: var(--color-white);
+  padding: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1.5rem;
+}
+
+.atm-card-header,
+.atm-card-content {
+  display: grid;
+  grid-template-columns:  2fr 1.5fr 2fr 1.5fr 1fr;
+}
+
+.atm-card-header{
+  font-weight: bold;
+  font-size: 0.85em;
+  color: #888;
+  margin-bottom: 0.5rem;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 0.4rem;
+}
+
+.atm-card-header >:last-child,
+.atm-card-content >:last-child {
+  justify-self: center;
+  align-self: center;
+}
+
+.atm-card-header > :nth-last-child(2) {
+  max-width: 70px;
+}
+
+.atm-card-content div {
+  font-size: 0.95rem;
+  margin-right: 0;
+}
+
+.atm-card-content ul {
+  padding-left: 1rem;
+ 
+}
+
+.atm-card-content div:first-child {
+  white-space: normal;
+  word-break: break-word;
+  max-width: 220px;
+}
+
+.services-list{
+  margin: 0;
+}
+.status-item {
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  list-style: none;
+  margin: 0;
+}
+
+.status-item span {
+  display: inline-block; 
+  padding-bottom: 6px;
+}
+
+
+.edit-btn,
+.delete-btn {
+  background: none;
+  border: none;
+  border-radius: 5px;
+  padding: 9px 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.edit-btn:hover,
+.delete-btn:hover {
+  background: var(--action-btn-bg);
+}
+
+.edit-btn{
+  margin-right: 10px;
+}
+
+
+/*-----------------------------*/
+/*    Add ATM Modal Styles    */
+/*---------------------------*/
+
+.overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: var(--overlay-bg);
+  display: flex;
+  align-items: center;
+  justify-content:center;
+  z-index: 1000;
+}
+
+.hidden{
+  display: none;
+}
+
+.add-atm-modal {
+  background: var(--modal-bg);
+  width: 500px;
+  max-width: 95%;
+  max-height: 90vh;
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+}
+
+.add-atm-header {
+  background-color: var(--color-secondary);
+  color: white;
+  padding: 18px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+}
+
+.add-atm-header h2 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  color: var(--color-white);
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.add-atm-form {
+  padding: 20px 25px;
+  overflow-y: auto;
+  max-height: calc(90vh - 60px);
+}
+
+.add-atm-form label {
+  font-weight: 600;
+  display: block;
+  margin: 15px 0 5px;
+  font-size: 14px;
+}
+
+.add-atm-form input[type="text"],
+.add-atm-form input[type="number"] {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  border-radius: 8px;
+  border: 1px solid var(--modal-border);
+  box-sizing: border-box;
+}
+
+.lat-long {
+  display: flex;
+  gap: 10px;
+}
+
+.lat-long > div {
+  flex: 1;
+}
+
+fieldset {
+  border: none;
+  margin: 20px 0;
+  padding: 0;
+}
+
+fieldset legend {
+  font-weight: bold;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+fieldset label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: normal;
+  font-size: 14px;
+}
+
+.radio-groups {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  gap: 30px;
+}
+
+.radio-groups > div {
+  flex: 1;
+}
+
+.radio-groups label:first-child{
+  display: block;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+  accent-color: var(--color-secondary);
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 18px 25px;
+  border-top: 1px solid var(--modal-border);
+  background-color: var(--color-white);
+}
+
+.form-buttons button {
+  padding: 10px 20px;
+  font-size: 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  border: 1px solid var(--color-black);
+  color: black;
+  transition: background 0.2s;
+}
+
+.form-buttons button[type="submit"] {
+  background: var(--color-black);
+  color: var(--color-white);
+  border: none;
+}
+
+.form-buttons button[type="button"] {
+  background: var(--color-white);
+}
+
+.form-buttons button[type="submit"]:hover {
+  background: #222;
+}
+
+.form-buttons button:hover {
+  background: #f0f0f0;
+}
