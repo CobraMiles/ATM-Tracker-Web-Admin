@@ -21,8 +21,9 @@
 
   </div>
 
-  <?php include 'view/partials/add_atm.php'; ?>
-
+  <?php include 'view/partials/atm_form.php'; ?>
+  <?php include 'view/partials/edit_atm.php'; ?>
+  
   <script src="public/js/main.js"></script>
   <script src="public/js/atms.js"></script>
 </body>

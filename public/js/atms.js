@@ -1,5 +1,24 @@
-let formEventsInitialized = false;  //Used to make sure that the event listeners on the add modal are added once only
-let isChanged = false; //Used to check whether a change has been done on the add form
+const overlay = document.getElementById('atm-modal-overlay');
+const title = document.getElementById('atm-modal-title');
+const atmForm = document.getElementById("atm-form");
+atmForm.addEventListener('submit', (e) => handleFormSubmit(e));
+let isAtmFormChanged = false; //Used to check whether a change has been done on the add form
+atmForm.addEventListener('input', () => isAtmFormChanged = true)
+const addOrUpdateATMBtn = document.getElementById("add-or-update-atm-btn")
+const referenceInput = document.getElementById('reference');
+const nameAndLocationInput = document.getElementById('name-and-location');
+const addressInput = document.getElementById('address');
+const latitudeInput = document.getElementById('latitude');
+const longitudeInput = document.getElementById('longitude');
+const servicesContainer = document.getElementById("services-container");
+const availabilityRadiobuttons = document.querySelectorAll('input[name="availability"]');
+const visibilityRadiobuttons = document.querySelectorAll('input[name="visibility"]');
+const cancelButton = document.getElementById("cancel-btn")
+const closeButton = document.getElementById("close-btn")
+
+let currentAtmId;
+let atms;
+let services;
 
 function loadATMList() { 
 
@@ -10,7 +29,7 @@ function loadATMList() {
   .then(res => res.json())
   .then(data => {
     if(data.success){
-      const atms = data.data;
+      atms = data.data;
       const atmList = document.getElementById('atm-list');
       const atmHeader = document.getElementById('atm-header');
       atmList.innerHTML = '';
@@ -20,7 +39,11 @@ function loadATMList() {
       addATMBtn.textContent = '+ Add ATM';
       addATMBtn.id = 'add-atm-btn';
       addATMBtn.classList.add('add-atm-btn');
-      addATMBtn.addEventListener('click', setUpAddATMModal);
+      addATMBtn.addEventListener('click', () => {
+        resetForm(atmForm);
+        loadServices();
+        overlay.classList.toggle("hidden");
+      });
 
       atmHeader.appendChild(addATMBtn);
 
@@ -73,8 +96,8 @@ function loadATMList() {
             </div>
           </div>
           <div class="action-buttons">
-            <button data-id="${atm.id}" class="edit-btn"><i class="fas fa-edit"></i></button>
-            <button data-id="${atm.id}" class="delete-btn"><i class="fa-solid fa-trash"></i></i></button>
+            <button data-id="${atm.id}" class="edit-btn" onclick="editAtm(this)"><i class="fas fa-edit"></i></button>
+            <button data-id="${atm.id}" class="delete-btn" onclick="deleteATM(this)"><i class="fa-solid fa-trash"></i></i></button>
           </div>          
         `;
         atmCard.appendChild(atmCardHeader);
@@ -91,31 +114,10 @@ function loadATMList() {
   })
 }
 
-//This function displays the addATM Modal and sets up the event listeners and corresponding handlers
-//Including the events for the close and cancel buttons
-function setUpAddATMModal(){
-  if(!formEventsInitialized){
-    const form = document.getElementById("add-atm-form")
-    form.addEventListener('input', () => isChanged = true);
-
-    const closeButton = document.getElementById("close-btn")
-    closeButton.addEventListener('click', () => {handleFormClose(form)});
-
-    const cancelButton = document.getElementById("cancel-btn")
-    cancelButton.addEventListener('click', () => {handleFormClose(form)});
-
-    formEventsInitialized = true;
-  }
-  const overlay = document.getElementById("add-atm-overlay");
-  const servicesContainer = document.getElementById("services-container");
-  overlay.classList.remove("hidden");
-  loadServices();
-  
-
-  function loadServices(){
+function loadServices(){
     servicesContainer.innerHTML = `<p>Loading services...</p>`;
 
-    fetch('routes/routes.php', {
+      return fetch('routes/routes.php', {
       method: 'POST',
       body: new URLSearchParams({action: 'get_services'})
     })
@@ -154,9 +156,157 @@ function setUpAddATMModal(){
     })
   }
 
-  function handleFormClose(form){
-    if(isChanged){
-      if(confirm("You have unsaved changes. Do you want to discard them?")) {
+
+function editAtm(buttonEl) {
+  const atmId = buttonEl.dataset.id;
+  currentAtmId = atmId;
+  isAtmFormChanged = false;
+  const payload = new URLSearchParams();
+  payload.append('action', 'get_atm');
+  payload.append('atm_id', atmId);
+  
+  fetch('routes/routes.php', {
+      method: 'POST',
+      body: payload
+    })
+    .then(res => res.json())
+    .then(data => {
+      if(data.success){
+        const atm = data.data;
+        title.innerText = 'Update ATM';
+        addOrUpdateATMBtn.innerText = 'Edit ATM';
+        referenceInput.value = atm['reference'];
+        nameAndLocationInput.value = atm['name_and_location'];
+        addressInput.value = atm['address'];
+        latitudeInput.value = atm['latitude'];
+        longitudeInput.value = atm['longitude'];
+        availabilityRadiobuttons.forEach(radio => {
+          radio.checked = (radio.value === String(atm["is_online"]));
+        });
+        visibilityRadiobuttons.forEach(radio => {
+          radio.checked = (radio.value === String(atm["is_visible"]));
+        })
+        loadServices().then(()=>{
+          let servicesCheckboxes = document.querySelectorAll('input[name="services[]"]');
+        servicesCheckboxes.forEach(checkbox =>
+          checkbox.checked = atm['services'].includes(parseInt(checkbox.value))
+          )   
+       
+        });    
+        overlay.classList.remove("hidden");
+      }else{
+        alert(data.message || "Failed to get ATM.");
+      }
+    })
+    .catch(err => {
+    console.error("Fetch error:", err);
+    alert("Error Loading ATM details.");
+  })
+}
+
+function addOrUpdateATM() {
+  const formData = new FormData(atmForm);
+  const reference = formData.get("reference")?.trim();
+  const nameAndLocation = formData.get("name-and-location")?.trim();
+  const address = formData.get('address')?.trim();
+  const latitude = formData.get('latitude');
+  const longitude = formData.get('longitude');
+  const selectedServices = formData.getAll('services[]');
+  const availability = formData.get('availability');
+  const visibility = formData.get('visibility');
+  console.log(selectedServices);
+
+  //Checks that all the fields have been filled
+  if(!nameAndLocation || !address || !latitude || !longitude){
+    alert("Please fill in all required fields");
+    return;
+  }
+
+  const payload = new URLSearchParams();
+  payload.append('reference', reference);
+  payload.append('name_and_location', nameAndLocation);
+  payload.append('address', address);
+  payload.append('latitude', latitude);
+  payload.append('longitude', longitude);
+  payload.append('is_online', availability);
+  payload.append('is_visible', visibility);
+
+  selectedServices.forEach(serviceId => {
+    payload.append('services[]', serviceId);
+  })
+  
+
+  if(!currentAtmId){
+    //Add ATM
+    payload.append('action', 'add_atm');
+    fetch('routes/routes.php', {
+      method: 'POST',
+      body: payload
+     })
+    .then(res => res.json())
+    .then(data => {
+      if(data.success){
+        alert("ATM added succesfully");
+        resetForm(atmForm);
+        loadATMList();
+      }else{
+        alert(data.message || "Failed to add ATM.");
+      }
+    })
+    .catch(error => {
+      console.error("Error:", error);
+      alert("Error adding ATM");
+    })
+  }else{
+    //Update ATM
+    payload.append('action', 'update_atm');
+    payload.append('atm_id', currentAtmId);
+    fetch('routes/routes.php', {
+          method: 'POST',
+          body: payload
+        })
+    .then(res => res.json())
+    .then(data => {
+      if(data.success){
+        alert("ATM updated successfully");
+        resetForm(atmForm);
+        loadATMList();
+      }else{
+        alert(data.message || "Failed to update ATM.");
+      }
+    })
+    .catch(error => {
+      console.error("Error:", error);
+      alert("Error updating ATM");
+    });
+
+      }
+
+    }
+
+function handleFormSubmit(e){
+    e.preventDefault();
+    addOrUpdateATM();
+    
+}
+
+function resetForm(form){
+    form.reset();
+    title.innerText = 'Add a new ATM';
+    addOrUpdateATMBtn.innerText = "Add ATM"
+    overlay.classList.add("hidden");
+    currentAtmId = null;
+    isAtmFormChanged = false;
+  }
+
+closeButton.addEventListener('click', () => {handleFormClose(atmForm)});
+cancelButton.addEventListener('click', () => {handleFormClose(atmForm)});
+
+
+function handleFormClose(form){
+    if(isAtmFormChanged){
+      const modeLabel = currentAtmId ? 'editing this ATM' : 'adding a new ATM';
+      if(confirm(`You have unsaved changes while ${modeLabel} . Do you want to discard them?`)) {
         resetForm(form);
       }
     }else{
@@ -164,13 +314,62 @@ function setUpAddATMModal(){
     }
   }
 
-  function resetForm(form){
-    form.reset();
-    overlay.classList.add("hidden");
-    isChanged = false;
+function deleteATM(buttonEl){
+  if(confirm('Are you sure you want to DELETE this ATM?')){
+      const atmId = buttonEl.dataset.id;
+      currentAtmId = atmId;
+      const payload = new URLSearchParams();
+      payload.append('action', 'delete_atm');
+      payload.append('atm_id', atmId);
+      
+      fetch('routes/routes.php', {
+          method: 'POST',
+          body: payload
+        })
+        .then(res => res.json())
+        .then(data => {
+          if(data.success){
+          alert("ATM deleted successfully");
+          loadATMList();
+          }else{
+            alert(data.message || "Failed to delete ATM.");
+          }
+        })
+        .catch(err => {
+        console.error("Fetch error:", err);
+        alert("Error deleting ATM details.");
+      })
   }
 }
 
-function submitAddATMModal(){
+//This function displays the addATM Modal and sets up the event listeners and corresponding handlers
+//Including the events for the close and cancel buttons
 
+let atmFormEventsInitialized = false;  //Used to make sure that the event listeners on the add modal are added once only
+// //Used to check whether a change has been done on the add form
+
+function setUpATMModal(){
+
+  if(!atmFormEventsInitialized){
+    atmForm.addEventListener('input', () => isAtmFormChanged = true);
+    atmForm.addEventListener('submit', handleFormSubmit);
+
+    
+
+    atmFormEventsInitialized = true;
+  }
+  const overlay = document.getElementById("atm-modal-overlay");
+  const servicesContainer = document.getElementById("services-container");
+  overlay.classList.remove("hidden");
+  loadServices();
+  
+
+  
+ 
+
+  
+  
+}
+
+function setUpEditATMModal(){
 }

@@ -5,9 +5,9 @@ function get_db_connection() {
     $password = '';
 
     try {
-      $db = new PDO($dsn, $username, $password);
-      $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-      return $db;
+      $connection = new PDO($dsn, $username, $password);
+      $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+      return $connection;
     }catch(PDOException $e) {
       $error = "Database Error: ";
       $error .= $e -> getMessage();

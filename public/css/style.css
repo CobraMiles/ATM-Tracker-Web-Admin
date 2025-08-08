@@ -242,7 +242,7 @@ body, html {
   display: none;
 }
 
-.add-atm-modal {
+.atm-modal {
   background: var(--modal-bg);
   width: 500px;
   max-width: 95%;
@@ -254,7 +254,7 @@ body, html {
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
 }
 
-.add-atm-header {
+.atm-modal-header {
   background-color: var(--color-secondary);
   color: white;
   padding: 18px 20px;
@@ -265,7 +265,7 @@ body, html {
   border-top-right-radius: 16px;
 }
 
-.add-atm-header h2 {
+.atm-modal-header h2 {
   margin: 0;
   font-size: 18px;
 }
@@ -278,21 +278,25 @@ body, html {
   cursor: pointer;
 }
 
-.add-atm-form {
+.atm-form {
   padding: 20px 25px;
   overflow-y: auto;
   max-height: calc(90vh - 60px);
 }
 
-.add-atm-form label {
+.atm-form label {
   font-weight: 600;
   display: block;
   margin: 15px 0 5px;
   font-size: 14px;
 }
 
-.add-atm-form input[type="text"],
-.add-atm-form input[type="number"] {
+#atm-form label:first-of-type{
+  margin-top: 0px;
+}
+
+.atm-form input[type="text"],
+.atm-form input[type="number"] {
   width: 100%;
   padding: 10px;
   font-size: 14px;
@@ -355,7 +359,7 @@ input[type="radio"] {
   display: flex;
   justify-content: flex-end;
   gap: 12px;
-  padding: 18px 25px;
+  padding: 18px 0px 0px 25px;
   border-top: 1px solid var(--modal-border);
   background-color: var(--color-white);
 }

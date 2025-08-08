@@ -1,10 +1,13 @@
-<div id="add-atm-overlay" class="overlay hidden">
-  <div class="add-atm-modal">
-    <div class="add-atm-header">
-      <h2>Add a new ATM</h2>
-      <button id="close-btn" class="close-btn">X</button>
+<div id="atm-modal-overlay" class="overlay hidden">
+  <div class="atm-modal">
+    <div class="atm-modal-header">
+      <h2 id="atm-modal-title">Add a new ATM</h2>
+      <button id="close-btn" class="close-btn" type="button">X</button>
     </div>
-    <form id="add-atm-form" class="add-atm-form">
+    <form id="atm-form" class="atm-form">
+      <label for="reference" class="title">Reference</label>
+      <input type="text" id="reference" name="reference" required>
+
       <label for="name-and-location" class="title">Name and Location</label>
       <input type="text" id="name-and-location" name="name-and-location" required>
 
@@ -17,7 +20,7 @@
           <input type="number" step="any" id="latitude" name="latitude" required>
         </div>
         <div>
-          <label for="longitude">Latitude</label>
+          <label for="longitude">Longtitude</label>
           <input type="number" step="any" id="longitude" name="longitude" required>
         </div>
       </div>
@@ -41,7 +44,7 @@
       
       <div class="form-buttons">
         <button type="button" id="cancel-btn" class="cancel-btn">Cancel</button>
-        <button type="submit" id="add-btn" class="add-btn">Add ATM</button>
+        <button type="submit" id="add-or-update-atm-btn" class="add-btn">Add ATM</button>
       </div>
     </form>
   </div>

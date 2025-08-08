@@ -16,5 +16,17 @@
       case 'get_services':
         getServicesList();
         break;
+      case 'add_atm':
+        addATM();
+        break;
+      case 'get_atm';
+        getATM();
+        break;
+      case 'update_atm';
+        updateATM();
+        break;
+      case 'delete_atm';
+        deleteATM();
+        break;
     }
 ?>
