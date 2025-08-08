@@ -128,11 +128,11 @@
                   ON atms.atm_id = atms_services.atm_id AND atms_services.is_deleted = 0
                 LEFT JOIN services 
                   ON atms_services.service_id = services.service_id
-                WHERE atms.is_deleted = 0 AND atms.atm_id = $atm_id
+                WHERE atms.is_deleted = 0 AND atms.atm_id = :atm_id
                 ORDER BY atms.atm_id;";
 
     $statement = $connection->prepare($query);
-    $statement->execute();
+    $statement->execute([':atm_id' => $atm_id]);
     $results = $statement -> fetchAll(PDO::FETCH_ASSOC);
 
 

@@ -19,14 +19,26 @@
       case 'add_atm':
         addATM();
         break;
-      case 'get_atm';
+      case 'get_atm':
         getATM();
         break;
-      case 'update_atm';
+      case 'update_atm':
         updateATM();
         break;
-      case 'delete_atm';
+      case 'delete_atm':
         deleteATM();
+        break;
+      case 'get_service':
+        getService();
+        break;
+      case 'add_service':
+        addService();
+        break;
+      case 'update_service':
+        updateService();
+        break;
+      case 'delete_service':
+        deleteService();
         break;
     }
 ?>

@@ -105,17 +105,15 @@ body, html {
   font-weight: bold;
 }
  
-/*-----------------------------*/
-/*        ATM Styles          */
-/*---------------------------*/
-.atm-header {
+
+.main-view-header {
   display: flex;
   justify-content: flex-end;
   padding: 1rem 0rem 1rem 1.5rem;
   margin-top: 1rem;
 }
 
-.add-atm-btn {
+.add-btn {
   background: var(--color-secondary);
   color: var(--color-white);
   border: none;
@@ -126,9 +124,13 @@ body, html {
   transition: background-color 0.2s ease-in-out;
 }
 
-.add-atm-btn:hover {
+.add-btn:hover {
   background-color: #333;
 }
+
+/*-----------------------------*/
+/*        ATM Styles          */
+/*---------------------------*/
 
 .atm-list {
   margin-top: 1.5rem;
@@ -242,7 +244,7 @@ body, html {
   display: none;
 }
 
-.atm-modal {
+.modal {
   background: var(--modal-bg);
   width: 500px;
   max-width: 95%;
@@ -254,7 +256,7 @@ body, html {
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
 }
 
-.atm-modal-header {
+.modal-header {
   background-color: var(--color-secondary);
   color: white;
   padding: 18px 20px;
@@ -265,7 +267,7 @@ body, html {
   border-top-right-radius: 16px;
 }
 
-.atm-modal-header h2 {
+.modal-header h2 {
   margin: 0;
   font-size: 18px;
 }
@@ -278,25 +280,26 @@ body, html {
   cursor: pointer;
 }
 
-.atm-form {
+.modal-form {
   padding: 20px 25px;
   overflow-y: auto;
   max-height: calc(90vh - 60px);
 }
 
-.atm-form label {
+.modal-form label {
   font-weight: 600;
   display: block;
   margin: 15px 0 5px;
   font-size: 14px;
 }
 
-#atm-form label:first-of-type{
+#modal-form label:first-of-type{
   margin-top: 0px;
 }
 
-.atm-form input[type="text"],
-.atm-form input[type="number"] {
+.modal-form input[type="text"],
+.modal-form input[type="number"],
+.modal-form textarea {
   width: 100%;
   padding: 10px;
   font-size: 14px;
@@ -304,6 +307,7 @@ body, html {
   border: 1px solid var(--modal-border);
   box-sizing: border-box;
 }
+
 
 .lat-long {
   display: flex;
@@ -331,6 +335,11 @@ fieldset label {
   margin-bottom: 8px;
   font-weight: normal;
   font-size: 14px;
+}
+
+textarea {
+  height: 150px;
+  margin-bottom: 15px;
 }
 
 .radio-groups {
@@ -392,3 +401,64 @@ input[type="radio"] {
 .form-buttons button:hover {
   background: #f0f0f0;
 }
+
+
+/*-----------------------------*/
+/*      Service Styles        */
+/*---------------------------*/
+.services-table-container {
+  background-color: var(--color-white);
+  padding: 0;
+  margin-top: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 4px 4px 6px 2px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+}
+
+.services-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: "Segoe UI", sans-serif;
+  font-size: 14px;
+  color: #333;
+  table-layout: fixed;
+}
+
+.services-table thead {
+  background-color: #f5f5f5;
+}
+
+.services-table th,
+.services-table td {
+  padding: 16px;
+  text-align: left;
+  vertical-align: middle;
+}
+
+
+.services-table th:nth-child(1),
+.services-table td:nth-child(1) {
+  text-align: left;
+  padding-left: 24px;
+}
+
+
+.services-table th:nth-child(4),
+.services-table td:nth-child(4) {
+  text-align: center;
+  padding-right: 24px;
+}
+
+
+.services-table tbody tr:not(:last-child) {
+  border-bottom: 1px solid var(--color-border);
+}
+
+
+.services-table td.actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+

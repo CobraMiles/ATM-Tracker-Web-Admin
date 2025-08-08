@@ -22,9 +22,9 @@
   </div>
 
   <?php include 'view/partials/atm_form.php'; ?>
-  <?php include 'view/partials/edit_atm.php'; ?>
-  
+  <?php include 'view/partials/service_form.php'; ?>
   <script src="public/js/main.js"></script>
   <script src="public/js/atms.js"></script>
+  <script src="public/js/services.js"></script>
 </body>
 </html>

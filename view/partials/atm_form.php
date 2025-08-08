@@ -1,10 +1,10 @@
 <div id="atm-modal-overlay" class="overlay hidden">
-  <div class="atm-modal">
-    <div class="atm-modal-header">
+  <div class="modal">
+    <div class="modal-header">
       <h2 id="atm-modal-title">Add a new ATM</h2>
-      <button id="close-btn" class="close-btn" type="button">X</button>
+      <button id="atm-close-btn" class="close-btn" type="button">X</button>
     </div>
-    <form id="atm-form" class="atm-form">
+    <form id="atm-form" class="modal-form">
       <label for="reference" class="title">Reference</label>
       <input type="text" id="reference" name="reference" required>
 
@@ -43,7 +43,7 @@
       </div>
       
       <div class="form-buttons">
-        <button type="button" id="cancel-btn" class="cancel-btn">Cancel</button>
+        <button type="button" id="atm-cancel-btn" class="cancel-btn">Cancel</button>
         <button type="submit" id="add-or-update-atm-btn" class="add-btn">Add ATM</button>
       </div>
     </form>

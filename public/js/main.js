@@ -15,6 +15,10 @@ document.querySelectorAll('.menu-item').forEach(item => {
         if(view === "atms") {
           loadATMList();
         }
+        if(view === "services") {
+          loadServicesList();
+        }
+        
       })
   })
 })

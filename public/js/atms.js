@@ -1,7 +1,7 @@
-const overlay = document.getElementById('atm-modal-overlay');
-const title = document.getElementById('atm-modal-title');
+const atmOverlay = document.getElementById('atm-modal-overlay');
+const atmTitle = document.getElementById('atm-modal-title');
 const atmForm = document.getElementById("atm-form");
-atmForm.addEventListener('submit', (e) => handleFormSubmit(e));
+atmForm.addEventListener('submit', (e) => handleATMFormSubmit(e));
 let isAtmFormChanged = false; //Used to check whether a change has been done on the add form
 atmForm.addEventListener('input', () => isAtmFormChanged = true)
 const addOrUpdateATMBtn = document.getElementById("add-or-update-atm-btn")
@@ -13,12 +13,12 @@ const longitudeInput = document.getElementById('longitude');
 const servicesContainer = document.getElementById("services-container");
 const availabilityRadiobuttons = document.querySelectorAll('input[name="availability"]');
 const visibilityRadiobuttons = document.querySelectorAll('input[name="visibility"]');
-const cancelButton = document.getElementById("cancel-btn")
-const closeButton = document.getElementById("close-btn")
+const atmCancelButton = document.getElementById("atm-cancel-btn")
+const atmCloseButton = document.getElementById("atm-close-btn")
 
 let currentAtmId;
 let atms;
-let services;
+let atmServices;
 
 function loadATMList() { 
 
@@ -38,11 +38,11 @@ function loadATMList() {
       const addATMBtn = document.createElement('button');
       addATMBtn.textContent = '+ Add ATM';
       addATMBtn.id = 'add-atm-btn';
-      addATMBtn.classList.add('add-atm-btn');
+      addATMBtn.classList.add('add-btn');
       addATMBtn.addEventListener('click', () => {
-        resetForm(atmForm);
+        resetAtmForm(atmForm);
         loadServices();
-        overlay.classList.toggle("hidden");
+        atmOverlay.classList.toggle("hidden");
       });
 
       atmHeader.appendChild(addATMBtn);
@@ -173,7 +173,7 @@ function editAtm(buttonEl) {
     .then(data => {
       if(data.success){
         const atm = data.data;
-        title.innerText = 'Update ATM';
+        serviceTitle.innerText = 'Update ATM';
         addOrUpdateATMBtn.innerText = 'Edit ATM';
         referenceInput.value = atm['reference'];
         nameAndLocationInput.value = atm['name_and_location'];
@@ -193,7 +193,7 @@ function editAtm(buttonEl) {
           )   
        
         });    
-        overlay.classList.remove("hidden");
+        atmOverlay.classList.remove("hidden");
       }else{
         alert(data.message || "Failed to get ATM.");
       }
@@ -247,7 +247,7 @@ function addOrUpdateATM() {
     .then(data => {
       if(data.success){
         alert("ATM added succesfully");
-        resetForm(atmForm);
+        resetAtmForm(atmForm);
         loadATMList();
       }else{
         alert(data.message || "Failed to add ATM.");
@@ -269,7 +269,7 @@ function addOrUpdateATM() {
     .then(data => {
       if(data.success){
         alert("ATM updated successfully");
-        resetForm(atmForm);
+        resetAtmForm(atmForm);
         loadATMList();
       }else{
         alert(data.message || "Failed to update ATM.");
@@ -284,33 +284,33 @@ function addOrUpdateATM() {
 
     }
 
-function handleFormSubmit(e){
+function handleATMFormSubmit(e){
     e.preventDefault();
     addOrUpdateATM();
     
 }
 
-function resetForm(form){
+function resetAtmForm(form){
     form.reset();
-    title.innerText = 'Add a new ATM';
+    serviceTitle.innerText = 'Add a new ATM';
     addOrUpdateATMBtn.innerText = "Add ATM"
-    overlay.classList.add("hidden");
+    atmOverlay.classList.add("hidden");
     currentAtmId = null;
     isAtmFormChanged = false;
   }
 
-closeButton.addEventListener('click', () => {handleFormClose(atmForm)});
-cancelButton.addEventListener('click', () => {handleFormClose(atmForm)});
+atmCloseButton.addEventListener('click', () => {handleAtmFormClose(atmForm)});
+atmCancelButton.addEventListener('click', () => {handleAtmFormClose(atmForm)});
 
 
-function handleFormClose(form){
+function handleAtmFormClose(form){
     if(isAtmFormChanged){
       const modeLabel = currentAtmId ? 'editing this ATM' : 'adding a new ATM';
       if(confirm(`You have unsaved changes while ${modeLabel} . Do you want to discard them?`)) {
-        resetForm(form);
+        resetAtmForm(form);
       }
     }else{
-      resetForm(form);
+      resetAtmForm(form);
     }
   }
 
@@ -352,7 +352,7 @@ function setUpATMModal(){
 
   if(!atmFormEventsInitialized){
     atmForm.addEventListener('input', () => isAtmFormChanged = true);
-    atmForm.addEventListener('submit', handleFormSubmit);
+    atmForm.addEventListener('submit', handleATMFormSubmit);
 
     
 
