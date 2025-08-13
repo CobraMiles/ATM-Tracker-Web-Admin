@@ -21,10 +21,31 @@
 
   </div>
 
-  <?php include 'view/partials/atm_form.php'; ?>
-  <?php include 'view/partials/service_form.php'; ?>
+  <?php include_once 'view/partials/atm_form.php'; ?>
+  <?php include_once 'view/partials/service_form.php'; ?>
+
+  <!-- <script type="module">
+  import { auth } from "/atm-tracker-web/public/js/firebase-config.js";
+  import { onAuthStateChanged, signOut } 
+    from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+
+  onAuthStateChanged(auth, user => {
+    if (!user) {
+      window.location.href = "/atm-tracker-web/view/pages/login.php";
+    } else {
+      document.body.style.display = "block"; // show only if logged in
+    }
+  });
+
+  // Optional logout button handling
+  document.getElementById("logout-btn")?.addEventListener("click", () => {
+    signOut(auth).then(() => {
+      window.location.href = "/atm-tracker-web/view/pages/login.php";
+    });
+  });
+  </script> -->
   <script src="public/js/main.js"></script>
   <script src="public/js/atms.js"></script>
-  <script src="public/js/services.js"></script>
+  <script src="public/js/services.js"></script>  
 </body>
 </html>
