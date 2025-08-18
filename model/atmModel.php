@@ -1,10 +1,11 @@
 <?php
+  
   require_once '../config/database.php';
 
   function get_all_atms() {
     $connection = get_db_connection();
 
-    $query = "SELECT 
+    $query = "SELECT
                   atms.atm_id,
                   atms.name_and_location,
                   atms.reference,
@@ -255,6 +256,68 @@
     }catch(PDOException $e){
       $connection ->rollBack();
       error_log("Delete ATM error:".$e->getMessage());
+      return false;
+    }
+  }
+
+  function toggle_atm_status($id){
+    $connection = get_db_connection();
+
+    try {
+      $connection->beginTransaction();
+
+      $query = "SELECT is_online FROM atms WHERE atm_id = ?";
+      $stmt = $connection->prepare($query);
+      $stmt->execute([$id]);
+      $current = $stmt->fetchColumn();
+
+      if ($current === false){
+        $connection ->rollBack();
+        return false;
+      }
+
+      $newStatus = $current ? 0 : 1;
+      $update = $connection->prepare("UPDATE atms SET is_online = ? WHERE atm_id = ?");
+      $update->execute([$newStatus, $id]);
+      $connection -> commit();
+      return $newStatus;
+      
+      
+
+    }catch(PDOException $e){
+      $connection ->rollBack();
+      error_log("Toggle ATM status error:".$e->getMessage());
+      return false;
+    }
+  }
+
+  function toggle_atm_visibility($id){
+    $connection = get_db_connection();
+
+    try {
+      $connection->beginTransaction();
+
+      $query = "SELECT is_visible FROM atms WHERE atm_id = ?";
+      $stmt = $connection->prepare($query);
+      $stmt->execute([$id]);
+      $current = $stmt->fetchColumn();
+
+      if ($current === false){
+        $connection ->rollBack();
+        return false;
+      }
+
+      $newVisibility = $current ? 0 : 1;
+      $update = $connection->prepare("UPDATE atms SET is_visible = ? WHERE atm_id = ?");
+      $update->execute([$newVisibility, $id]);
+      $connection -> commit();
+      return $newVisibility;
+      
+      
+
+    }catch(PDOException $e){
+      $connection ->rollBack();
+      error_log("Toggle ATM visibility error:".$e->getMessage());
       return false;
     }
   }

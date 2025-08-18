@@ -81,17 +81,21 @@ function loadATMList() {
             <div>
               <div class="status-item">
                 <span>Online</span>
-                 ${atm.is_online == 1
-                 ? '<i class="fa-solid fa-toggle-on"></i>'
-                 : '<i class="fa-solid fa-toggle-off"></i>'
-                }
+                <button data-id="${atm.id}" class="toggle-btn" onclick="toggleATMStatus(this)">
+                  ${atm.is_online == 1
+                  ? '<i class="fa-solid fa-toggle-on"></i>'
+                  : '<i class="fa-solid fa-toggle-off"></i>'
+                  }
+                </button>
               </div>
               <div class="status-item">
                 <span>Visible</span>
-                ${atm.is_visible == 1
-                ? '<i class="fa-solid fa-toggle-on"></i>'
-                : '<i class="fa-solid fa-toggle-off"></i>'
-                }
+                <button data-id="${atm.id}" class="toggle-btn" onclick="toggleATMVisibility(this)">
+                  ${atm.is_visible == 1
+                  ? '<i class="fa-solid fa-toggle-on"></i>'
+                  : '<i class="fa-solid fa-toggle-off"></i>'
+                  }
+                </button>
               </div>
             </div>
           </div>
@@ -336,40 +340,86 @@ function deleteATM(buttonEl){
           }
         })
         .catch(err => {
-        console.error("Fetch error:", err);
-        alert("Error deleting ATM details.");
+          console.error("Fetch error:", err);
+          alert("Error deleting ATM details.");
       })
   }
+}
+
+function toggleATMStatus(buttonEl){
+  const toggleIcon = buttonEl.querySelector('i');
+  const atmId = buttonEl.dataset.id;
+  const payload = new URLSearchParams();
+  payload.append('action', 'toggle_atm_status');
+  payload.append('atm_id', atmId);
+
+  fetch('routes/routes.php', {
+    method: 'POST',
+    body: payload
+  })
+  .then(res => res.json())
+  .then(data => {
+    if(data.success){
+      toggleIcon.classList.toggle('fa-toggle-off', data.status === 0);
+      toggleIcon.classList.toggle('fa-toggle-on', data.status === 1);
+    }else{
+      alert(data.message || "Failed to update ATM status.");
+    }
+  })
+  .catch(err => {
+      console.error("Fetch error:", err);
+      alert("Error updating ATM status.");
+    })
+}
+
+function toggleATMVisibility(buttonEl){
+  const toggleIcon = buttonEl.querySelector('i');
+  const atmId = buttonEl.dataset.id;
+  const payload = new URLSearchParams();
+  payload.append('action', 'toggle_atm_visibility');
+  payload.append('atm_id', atmId);
+
+  fetch('routes/routes.php', {
+    method: 'POST',
+    body: payload
+  })
+  .then(res => res.json())
+  .then(data => {
+    if(data.success){
+      toggleIcon.classList.toggle('fa-toggle-off', data.status === 0);
+      toggleIcon.classList.toggle('fa-toggle-on', data.status === 1);
+    }else{
+      alert(data.message || "Failed to update ATM visibility.");
+    }
+  })
+  .catch(err => {
+      console.error("Fetch error:", err);
+      alert("Error updating ATM visibility.");
+    })
 }
 
 //This function displays the addATM Modal and sets up the event listeners and corresponding handlers
 //Including the events for the close and cancel buttons
 
-let atmFormEventsInitialized = false;  //Used to make sure that the event listeners on the add modal are added once only
-// //Used to check whether a change has been done on the add form
+// let atmFormEventsInitialized = false;  
+// function setUpATMModal(){
 
-function setUpATMModal(){
-
-  if(!atmFormEventsInitialized){
-    atmForm.addEventListener('input', () => isAtmFormChanged = true);
-    atmForm.addEventListener('submit', handleATMFormSubmit);
+//   if(!atmFormEventsInitialized){
+//     atmForm.addEventListener('input', () => isAtmFormChanged = true);
+//     atmForm.addEventListener('submit', handleATMFormSubmit);
 
     
 
-    atmFormEventsInitialized = true;
-  }
-  const overlay = document.getElementById("atm-modal-overlay");
-  const servicesContainer = document.getElementById("services-container");
-  overlay.classList.remove("hidden");
-  loadServices();
-  
-
-  
- 
+//     atmFormEventsInitialized = true;
+//   }
+//   const overlay = document.getElementById("atm-modal-overlay");
+//   const servicesContainer = document.getElementById("services-container");
+//   overlay.classList.remove("hidden");
+//   loadServices();
 
   
   
-}
+// }
 
-function setUpEditATMModal(){
-}
+// function setUpEditATMModal(){
+// }

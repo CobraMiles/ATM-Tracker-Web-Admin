@@ -28,6 +28,12 @@
       case 'delete_atm':
         deleteATM();
         break;
+      case 'toggle_atm_status':
+        toggleATMStatus();
+        break;
+      case 'toggle_atm_visibility':
+        toggleATMVisibility();
+        break;
       case 'get_service':
         getService();
         break;

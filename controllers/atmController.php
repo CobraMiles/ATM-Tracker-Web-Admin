@@ -107,4 +107,46 @@
         ]);
       }
     }
+
+    function toggleATMStatus() {
+      $id = filter_input(INPUT_POST, 'atm_id', FILTER_VALIDATE_INT);
+      if ($id === null || $id === false) {
+        echo json_encode(["success" => false, "error" => "Invalid ID"]);
+        exit;
+      }
+      $result = toggle_atm_status($id);
+      if($result === false) {
+        echo json_encode([
+          'success' => false,
+          'message' => 'Failed to update ATM status.'
+        ]);
+      }else{
+        echo json_encode([
+          'success' => true,
+          'message' => 'ATM status updated successfully.',
+          'status' => $result
+        ]);
+      }
+    }
+
+    function toggleATMVisibility() {
+      $id = filter_input(INPUT_POST, 'atm_id', FILTER_VALIDATE_INT);
+      if ($id === null || $id === false) {
+        echo json_encode(["success" => false, "error" => "Invalid ID"]);
+        exit;
+      }
+      $result = toggle_atm_visibility($id);
+      if($result === false) {
+        echo json_encode([
+          'success' => false,
+          'message' => 'Failed to update ATM visibility.'
+        ]);
+      }else{
+        echo json_encode([
+          'success' => true,
+          'message' => 'ATM visibility updated successfully.',
+          'status' => $result
+        ]);
+      }
+    }
 ?>
