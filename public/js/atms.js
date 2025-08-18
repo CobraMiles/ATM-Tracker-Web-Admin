@@ -100,8 +100,8 @@ function loadATMList() {
             </div>
           </div>
           <div class="action-buttons">
-            <button data-id="${atm.id}" class="edit-btn" onclick="editAtm(this)"><i class="fas fa-edit"></i></button>
-            <button data-id="${atm.id}" class="delete-btn" onclick="deleteATM(this)"><i class="fa-solid fa-trash"></i></i></button>
+            <button title="Edit this ATM" data-id="${atm.id}" class="edit-btn" onclick="editAtm(this)"><i class="fas fa-edit"></i></button>
+            <button title="Delete this ATM" data-id="${atm.id}" class="delete-btn" onclick="deleteATM(this)"><i class="fa-solid fa-trash"></i></i></button>
           </div>          
         `;
         atmCard.appendChild(atmCardHeader);
