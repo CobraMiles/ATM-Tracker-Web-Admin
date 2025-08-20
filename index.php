@@ -6,6 +6,7 @@
   <title>ATM Admin</title>
   <link rel="stylesheet" href="public/css/style.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
   <div class="app-container">
@@ -45,6 +46,7 @@
   });
   </script> -->
   <script src="public/js/main.js"></script>
+  <script src="public/js/home.js"></script>
   <script src="public/js/atms.js"></script>
   <script src="public/js/services.js"></script>  
 </body>

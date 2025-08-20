@@ -2,7 +2,58 @@
   
   require_once '../config/database.php';
 
-  function get_all_atms() {
+  function getTotalNumberOfATMs(){
+    $connection = get_db_connection();
+
+    $query ="SELECT COUNT(*) AS total_atms
+             FROM atms
+             WHERE is_deleted = 0;";
+    $statement = $connection -> prepare($query);
+    $statement -> execute();
+    return $statement->fetch(PDO::FETCH_ASSOC)['total_atms'];
+  }
+
+  function getNumberOfOnlineATMs(){
+    $connection = get_db_connection();
+
+    $query ="SELECT COUNT(*) AS online_atms
+             FROM atms
+             WHERE is_deleted = 0 AND is_online = 1;";
+    $statement = $connection -> prepare($query);
+    $statement -> execute();
+    return $statement->fetch(PDO::FETCH_ASSOC)['online_atms'];
+  }
+
+  function getNumberOfVisibleATMs(){
+    $connection = get_db_connection();
+
+    $query ="SELECT COUNT(*) AS visible_atms
+             FROM atms
+             WHERE is_deleted = 0 AND is_visible = 1;";
+    $statement = $connection -> prepare($query);
+    $statement -> execute();
+    return $statement->fetch(PDO::FETCH_ASSOC)['visible_atms'];
+  }
+
+  function getNumberOfATMsPerService($service_id){
+    $connection = get_db_connection();
+
+    $query ="SELECT COUNT(DISTINCT atms.atm_id) AS atm_count
+              FROM atms
+              LEFT JOIN atms_services 
+              ON atms.atm_id = atms_services.atm_id 
+              AND atms_services.is_deleted = 0
+              WHERE atms.is_deleted = 0
+              AND atms_services.service_id = :service_id;";
+
+    $statement = $connection -> prepare($query);
+    $statement -> execute([':service_id' => $service_id]);
+    return $statement->fetch(PDO::FETCH_ASSOC)['atm_count'];
+  }
+
+
+
+  function getAllATMs() {
     $connection = get_db_connection();
 
     $query = "SELECT
@@ -53,7 +104,7 @@
   }
 
 
-  function insert_atm ($ref, $name_and_loc, $address, $lat, $lng, $online, $visible, $services){
+  function insertATM($ref, $name_and_loc, $address, $lat, $lng, $online, $visible, $services){
     $connection = get_db_connection();
 
     try {
@@ -111,10 +162,10 @@
     }
   }
 
-  function get_atm($atm_id){
+  function selectATM($atm_id){
     $connection = get_db_connection();
 
-    $query = "SELECT 
+    $query = "SELECT
                   atms.atm_id,
                   atms.name_and_location,
                   atms.reference,
@@ -163,7 +214,7 @@
 }
     
 
-  function update_atm ($id, $ref, $name_and_loc, $address, $lat, $lng, $online, $visible, $services){
+  function updateATM ($id, $ref, $name_and_loc, $address, $lat, $lng, $online, $visible, $services){
     $connection = get_db_connection();
 
     try {
@@ -228,7 +279,7 @@
     }
   }
   
-  function delete_atm ($id){
+  function hideATM ($id){
     $connection = get_db_connection();
 
     try {
@@ -260,7 +311,7 @@
     }
   }
 
-  function toggle_atm_status($id){
+  function updateATMStatus($id){
     $connection = get_db_connection();
 
     try {
@@ -291,7 +342,7 @@
     }
   }
 
-  function toggle_atm_visibility($id){
+  function updateATMVisibility($id){
     $connection = get_db_connection();
 
     try {
@@ -321,4 +372,5 @@
       return false;
     }
   }
+
 ?>

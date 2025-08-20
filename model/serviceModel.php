@@ -1,6 +1,17 @@
 <?php
   require_once '../config/database.php';
 
+  function getTotalNumberOfServices(){
+    $connection = get_db_connection();
+
+    $query ="SELECT COUNT(*) AS total_services
+             FROM services
+             WHERE is_deleted = 0;";
+    $statement = $connection -> prepare($query);
+    $statement -> execute();
+    return $statement->fetch(PDO::FETCH_ASSOC)['total_services'];
+  }
+
   function get_all_services(){
     $db = get_db_connection();
 

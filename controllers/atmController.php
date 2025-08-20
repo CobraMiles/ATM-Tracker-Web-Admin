@@ -3,7 +3,7 @@
     require_once '../model/atmModel.php';
 
     function getAtmsList() {
-      $atms = get_all_atms();
+      $atms = getAllATMs();
       echo json_encode([
         'success' => true,
         'data' => $atms,
@@ -28,7 +28,7 @@
         return;
       }
 
-      $result = insert_atm($reference, $name_and_location, $address, $latitude, $longitude, $is_online, $is_visible, $services);
+      $result = insertATM($reference, $name_and_location, $address, $latitude, $longitude, $is_online, $is_visible, $services);
       if($result){
         echo json_encode([
           'success' => true,
@@ -45,7 +45,7 @@
     function getATM(){
       if (isset($_POST['atm_id']) && is_numeric($_POST['atm_id'])){
         $id = intval($_POST['atm_id']);
-        $atm = get_atm($id);
+        $atm = selectATM($id);
         echo json_encode([
           'success' => true,
           'data' => $atm,
@@ -55,11 +55,10 @@
           'success' => false,
           'message' => 'Missing or invalid required fields.'
         ]);
-        return;
-      }  
+      }
     }
 
-    function updateATM(){
+    function editATM(){
       $id = intval($_POST['atm_id']);
       $reference = trim($_POST['reference'] ?? '');
       $name_and_location = trim($_POST['name_and_location'] ?? "");
@@ -78,7 +77,7 @@
         return;
       }
 
-      $result = update_atm($id, $reference, $name_and_location, $address, $latitude, $longitude, $is_online, $is_visible, $services);
+      $result = updateATM($id, $reference, $name_and_location, $address, $latitude, $longitude, $is_online, $is_visible, $services);
       if($result){
         echo json_encode([
           'success' => true,
@@ -94,7 +93,7 @@
 
     function deleteATM() {
       $id = intval($_POST['atm_id']);
-      $result = delete_atm($id);
+      $result = hideATM($id);
       if($result){
         echo json_encode([
           'success' => true,
@@ -114,7 +113,7 @@
         echo json_encode(["success" => false, "error" => "Invalid ID"]);
         exit;
       }
-      $result = toggle_atm_status($id);
+      $result = updateATMStatus($id);
       if($result === false) {
         echo json_encode([
           'success' => false,
@@ -135,7 +134,7 @@
         echo json_encode(["success" => false, "error" => "Invalid ID"]);
         exit;
       }
-      $result = toggle_atm_visibility($id);
+      $result = updateATMVisibility($id);
       if($result === false) {
         echo json_encode([
           'success' => false,

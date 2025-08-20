@@ -11,7 +11,11 @@ document.querySelectorAll('.menu-item').forEach(item => {
         document.getElementById('main-view').innerHTML = html;
         viewName = view === 'atms' ? 'ATMs' : view.charAt(0).toUpperCase() + view.slice(1);
         document.getElementById('view-title').textContent = viewName;
-
+        if (view === "home") {
+          requestAnimationFrame(() => {
+            loadCharts();
+          });
+        }
         if(view === "atms") {
           loadATMList();
         }
@@ -22,3 +26,8 @@ document.querySelectorAll('.menu-item').forEach(item => {
       })
   })
 })
+
+
+window.addEventListener("load", () => {
+  loadCharts();
+});

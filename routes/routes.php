@@ -5,11 +5,28 @@
 
     require_once '../controllers/atmController.php';
     require_once '../controllers/serviceController.php';
+    require_once '../controllers/homeController.php';
+
 
 
     $action = $_POST['action'] ?? '';
 
     switch ($action) {
+      case 'get_total_atm_count':
+        getTotalATMCount();
+        break;
+      case 'get_total_service_count':
+        getTotalServiceCount();
+        break;
+      case 'get_online_atm_count':
+        getOnlineATMCount();
+        break;
+      case 'get_visible_atm_count':
+        getVisibleATMCount();
+        break;
+      case 'get_all_atm_counts_per_service':
+        getAllATMCountsPerService();
+        break;
       case 'get_atms':
         getAtmsList();
         break;
@@ -23,7 +40,7 @@
         getATM();
         break;
       case 'update_atm':
-        updateATM();
+        editATM();
         break;
       case 'delete_atm':
         deleteATM();
