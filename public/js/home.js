@@ -234,6 +234,44 @@ async function loadCharts() {
     }]
   };
 
+  const textInOnlineDoughnut = {
+    id: 'textInDoughut',
+    beforeDatasetsDraw(chart, args, plugins){
+      const { ctx, data } = chart;
+
+      const xCenter = chart.getDatasetMeta(0).data[0].x;
+      const yCenter = chart.getDatasetMeta(0).data[0].y + 15;
+      const onlinePercent = onlineAtms / totalAtms * 100;
+
+      ctx.save();
+      ctx.font = 'bold 3rem sans-serif';
+      ctx.fillStyle = '#34D399';
+      ctx.textAlign = 'center';
+      ctx.fillText(`${Math.ceil(onlinePercent)}%`, xCenter, yCenter);
+
+
+    }
+  }
+
+  const textInVisibleDoughnut = {
+    id: 'textInDoughut',
+    beforeDatasetsDraw(chart, args, plugins){
+      const { ctx, data } = chart;
+
+      const xCenter = chart.getDatasetMeta(0).data[0].x;
+      const yCenter = chart.getDatasetMeta(0).data[0].y + 15;
+      const visiblePercent = visibleAtms / totalAtms * 100;
+
+      ctx.save();
+      ctx.font = 'bold 3rem sans-serif';
+      ctx.fillStyle = '#3B82F6';
+      ctx.textAlign = 'center';
+      ctx.fillText(`${Math.ceil(visiblePercent)}%`, xCenter, yCenter);
+
+
+    }
+  }
+
   const serviceData = {
     labels: atmCountsPerService.map(service => service.name),
     datasets: [{
@@ -244,7 +282,9 @@ async function loadCharts() {
     }]
   };
 
-  await initMap();
+  //await initMap();
+
+  
 
   if (totalAtms && onlineAtms) {
     new Chart(onlineCanvas,
@@ -268,7 +308,8 @@ async function loadCharts() {
               }
             }
           },
-        }
+        },
+        plugins: [textInOnlineDoughnut],
       }
     );
   } else {
@@ -297,7 +338,8 @@ async function loadCharts() {
               }
             }
           },
-        }
+        },
+        plugins: [textInVisibleDoughnut],
       }
     );
   } else {
