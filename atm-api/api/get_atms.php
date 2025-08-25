@@ -51,6 +51,10 @@
           'lng' => $row['longitude'],
           'services' => [],
           'online' => $row['is_online'],
+          'keywords' => [$row['name_and_location'],
+                        $row['address'],
+                        $row['is_online'] === 1 ? "Available" : ""
+                        ]
         ];
       }
       $service = $row['service_name'];

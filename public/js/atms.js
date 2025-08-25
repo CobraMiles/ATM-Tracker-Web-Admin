@@ -250,7 +250,7 @@ function addOrUpdateATM() {
     .then(res => res.json())
     .then(data => {
       if(data.success){
-        alert("ATM added succesfully");
+        //alert("ATM added succesfully");
         resetAtmForm(atmForm);
         loadATMList();
       }else{
@@ -272,7 +272,7 @@ function addOrUpdateATM() {
     .then(res => res.json())
     .then(data => {
       if(data.success){
-        alert("ATM updated successfully");
+        //alert("ATM updated successfully");
         resetAtmForm(atmForm);
         loadATMList();
       }else{
